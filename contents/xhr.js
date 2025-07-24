@@ -1,3 +1,5 @@
+console.log('🚀 [DMXSmart] ship channel inject working');
+
 const originalXHR = window.XMLHttpRequest;
 
 window.XMLHttpRequest = function () {
@@ -107,7 +109,7 @@ window.XMLHttpRequest = function () {
     return xhr;
 };
 
-console.log('XMLHttpRequest has been patched');
+console.log('🚀 [DMXSmart] XMLHttpRequest has been patched');
 
 function getOrderShipMap() {
     return JSON.parse(localStorage.getItem('orderShipMap') || '{}');
