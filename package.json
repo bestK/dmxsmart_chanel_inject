@@ -1,0 +1,52 @@
+{
+    "name": "dmxsmart-shipments-inject",
+    "displayName": "DMXSmart Shipments Inject",
+    "version": "0.0.1",
+    "description": "大迈未来WMS temu线上物流限定器",
+    "author": "plasmo-dev",
+    "scripts": {
+        "dev": "plasmo dev",
+        "build": "plasmo build"
+    },
+    "dependencies": {
+        "plasmo": "^0.90.5",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0"
+    },
+    "devDependencies": {
+        "@types/chrome": "^0.0.260",
+        "@types/node": "^20.11.0",
+        "@types/react": "^18.2.47",
+        "@types/react-dom": "^18.2.18",
+        "typescript": "^5.3.3",
+        "@plasmohq/messaging": "^0.6.2"
+    },
+    "manifest": {
+        "manifest_version": 3,
+        "permissions": [
+            "storage",
+            "declarativeContent",
+            "activeTab",
+            "webRequest"
+        ],
+        "host_permissions": [
+            "*://*/*"
+        ],
+        "content_security_policy": {
+            "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'",
+            "sandbox": "sandbox allow-scripts allow-forms allow-popups allow-modals; script-src 'unsafe-inline' 'unsafe-eval';"
+        }
+    },
+    "plasmo": {
+        "contentScripts": [
+            {
+                "matches": [
+                    "*://*/*"
+                ],
+                "js": [
+                    "contents/inject.ts"
+                ]
+            }
+        ]
+    }
+}
