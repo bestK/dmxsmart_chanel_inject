@@ -1,2 +1,4 @@
 /.plasmo
 /node_modules
+build/
+dist/

@@ -25,44 +25,61 @@ window.XMLHttpRequest = function () {
 
                     const { saleOrderIds } = JSON.parse(xhr._requestBody);
 
+                    const shipChannels = [];
                     for (const orderId of saleOrderIds) {
                         const shipChannel = orderShipMap[orderId];
-                        if (!shipChannel) {
-                            const fakeResponse = {
-                                success: false,
-                                errorCode: 400,
-                                errorMessage: '请先设置订单的运送方式',
-                            };
+                        shipChannels.push(shipChannel);
+                    }
 
-                            Object.defineProperty(xhr, 'responseText', {
-                                get: () => JSON.stringify(fakeResponse),
-                            });
+                    if (shipChannels.length === 0) {
+                        const fakeResponse = {
+                            success: false,
+                            errorCode: 400,
+                            errorMessage: '请先设置订单的运送方式',
+                        };
 
-                            Object.defineProperty(xhr, 'response', {
-                                get: () => JSON.stringify(fakeResponse),
-                            });
-                        } else {
-                            const { data } = JSON.parse(xhr.responseText);
-                            const usps = '604496950030336';
-                            const gofo = '611054816309248';
+                        Object.defineProperty(xhr, 'responseText', {
+                            get: () => JSON.stringify(fakeResponse),
+                        });
 
-                            const shipChannelId = shipChannel.toLowerCase().includes('usps') ? usps : gofo;
+                        Object.defineProperty(xhr, 'response', {
+                            get: () => JSON.stringify(fakeResponse),
+                        });
+                    } else if (shipChannels.length > 1) {
+                        const fakeResponse = {
+                            success: false,
+                            errorCode: 400,
+                            errorMessage: '请选择相同的运送方式',
+                        };
 
-                            const shipChannels = data.filter(item => item.channelId === shipChannelId);
+                        Object.defineProperty(xhr, 'responseText', {
+                            get: () => JSON.stringify(fakeResponse),
+                        });
 
-                            const fakeResponse = {
-                                success: true,
-                                data: shipChannels,
-                            };
+                        Object.defineProperty(xhr, 'response', {
+                            get: () => JSON.stringify(fakeResponse),
+                        });
+                    } else {
+                        const { data } = JSON.parse(xhr.responseText);
+                        const usps = '604496950030336';
+                        const gofo = '611054816309248';
 
-                            Object.defineProperty(xhr, 'responseText', {
-                                get: () => JSON.stringify(fakeResponse),
-                            });
+                        const shipChannelId = shipChannel.toLowerCase().includes('usps') ? usps : gofo;
 
-                            Object.defineProperty(xhr, 'response', {
-                                get: () => JSON.stringify(fakeResponse),
-                            });
-                        }
+                        const shipChannels = data.filter(item => item.channelId === shipChannelId);
+
+                        const fakeResponse = {
+                            success: true,
+                            data: shipChannels,
+                        };
+
+                        Object.defineProperty(xhr, 'responseText', {
+                            get: () => JSON.stringify(fakeResponse),
+                        });
+
+                        Object.defineProperty(xhr, 'response', {
+                            get: () => JSON.stringify(fakeResponse),
+                        });
                     }
                 }
 
